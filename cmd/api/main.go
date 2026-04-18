@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	//"github.com/JohnArllon/Meu-SaaS-Go/internal/domain"
 	"github.com/JohnArllon/Meu-SaaS-Go/internal/plataform/supabase"
 	"github.com/JohnArllon/Meu-SaaS-Go/internal/services/technicians"
 	"github.com/gin-gonic/gin"
@@ -13,39 +12,38 @@ import (
 )
 
 func main() {
-	//1.Carrega o .env
-	//err := godotenv.Load()
-	//if err != nil {
-	//	log.Fatal("Erro ao carregar o arquivo .env")
-	//
-	//}
+	// 1. Carrega as variáveis de ambiente (.env)
+	if err := godotenv.Load(); err != nil {
+		log.Println("Aviso: Arquivo .env não encontrado, usando variáveis de sistema.")
+	}
 
-	//2. Tenta conectar
-	godotenv.Load()
-
+	// 2. Estabelece conexão com o banco de dados (Supabase)
 	conn, err := supabase.Connect()
 	if err != nil {
-		log.Fatal("Falha na conexão: %v", err)
-
+		log.Fatalf("Erro crítico: falha na conexão com o banco: %v", err)
 	}
 	defer conn.Close(context.Background())
 
-	// Iniciando as camadas
+	// 3. Inicializa as camadas de serviço (Dependency Injection)
 	repo := technicians.NewRepository(conn)
 	handler := technicians.NewHandler(repo)
 
-	// Configura o servidor Gin
+	// 4. Configura o Servidor HTTP (Gin)
 	r := gin.Default()
 
-	// APLICAÇÃO DAS ROTAS
+	// 5. Definição das Rotas
+	api := r.Group("/api/v1") // Boa prática: versionamento de API
+	{
+		techniciansGroup := api.Group("/technicians")
+		{
+			techniciansGroup.POST("", handler.CreateTechnician)
+			techniciansGroup.GET("", handler.ListTechnicians)
+		}
+	}
 
-	// 1. Rota para Criar (POST)
-	r.POST("/technicians", handler.CreateTechnician)
-
-	// 2. Rota para Listar (GET)
-	r.GET("/technicians", handler.ListTechnicians)
-
-	fmt.Println("🚀 Servidor rodando em http://localhost:8080")
-	r.Run(":8080") // O servidor "trava" aqui e fica ouvindo
-
+	// 6. Inicia o servidor
+	fmt.Println("🚀 Servidor rodando em http://localhost:8080/api/v1/technicians")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatalf("Erro ao iniciar o servidor: %v", err)
+	}
 }
