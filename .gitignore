@@ -1,0 +1,4 @@
+.env
+bin/
+vendor/
+.idea/ # Pasta de configuração do GoLand
