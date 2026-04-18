@@ -48,34 +48,4 @@ func main() {
 	fmt.Println("🚀 Servidor rodando em http://localhost:8080")
 	r.Run(":8080") // O servidor "trava" aqui e fica ouvindo
 
-	//	fmt.Println("🚀 Conexão com o Supabase estabelecida com sucesso!")
-	//
-	//	//3. Teste de Engenharia: Usando o Repository para inserir um dado
-	//
-	//	// Instaciamos o repositório passando a conexão
-	//	repo := technicians.NewRepository(conn)
-	//
-	//	// Criamos um objeto (struct) do tipo Technician como dados de teste
-	//	novoTecnico := domain.Technician{
-	//		Name:  "John Arllon Teste",
-	//		Email: "john.teste@email.com",
-	//		Phone: "11988888877",
-	//	}
-	//
-	//	// Chamamos a função Create do repositório
-	//	err = repo.Create(context.Background(), novoTecnico)
-	//	if err != nil {
-	//		fmt.Println("❌ Erro ao salvar técnico: %v\n", err)
-	//	} else {
-	//		fmt.Println("✅ Técnico de teste salvo com sucesso no Supabase!")
-	//	}
-	//
-	//	//4. Teste rápido de leitura (opcional, mantendo o que já tinha)
-	//	var greeting string
-	//	err = conn.QueryRow(context.Background(), "select 'Banco de dados ativo!'").Scan(&greeting)
-	//	if err != nil {
-	//		fmt.Println("Erro ao executar query: %v\n", err)
-	//		return
-	//	}
-	//	fmt.Println("Mensagem do banco: %s\n", greeting)
 }
