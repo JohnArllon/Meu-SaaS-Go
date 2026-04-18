@@ -1,4 +1,15 @@
-.env
+# Binários
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 bin/
-vendor/
-.idea/ # Pasta de configuração do GoLand
+
+# Variáveis de ambiente (CRÍTICO)
+.env
+
+# Pastas temporárias e IDE
+.idea/
+.tmp/
+go.work
